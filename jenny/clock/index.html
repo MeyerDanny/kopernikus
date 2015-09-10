@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>My first Three.js app</title>
+		<title>Zeiterfassung</title>
 
 		<style>
 			body { margin: 0; }
@@ -14,6 +14,10 @@
 			//Creating a scene
 			var scene = new THREE.Scene();
 			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+			
+			var clock = new THREE.Clock();
+			clock.start();
+			
 
 			var renderer = new THREE.WebGLRenderer();
 			renderer.setSize( window.innerWidth, window.innerHeight );
@@ -27,9 +31,17 @@
 
 			camera.position.z = 5;
 
+			function stopZeit(){
+				clock.stop();
+				
+
+			}
 			//Rendering a scene
 			function render() {
 				requestAnimationFrame( render );
+				document.getElementById('debug').innerHTML=clock.getElapsedTime();
+				
+
 				renderer.render( scene, camera );
 
 				//Animating the cube
@@ -38,11 +50,12 @@
 			}
 			render();
 
+
+
 			//Clock
 
-			
-			
 		</script>
-		
+		<div id="debug" style="color:#fff;"></div>
+		<button id="stop" onclick="stopZeit()">Stop</button>
 	</body>
 </html>
