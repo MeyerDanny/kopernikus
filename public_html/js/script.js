@@ -4,6 +4,15 @@ var player;
 var playerGeometry;
 var playerMaterial;
 
+var star;
+var stars = [];
+var starMaterial;
+var starGeometry;
+
+var starInterval = 1000;
+var secondCount = 0;
+var speed = 0.1;
+
 init();
 animate();
 
@@ -29,11 +38,22 @@ function init(){
     //PLAYER
     playerGeometry = new THREE.SphereGeometry(0.3, 10, 10);
     playerMaterial = new THREE.MeshBasicMaterial({color: 0xffffff});
+       
+    //STARS
+    starGeometry = new THREE.SphereGeometry(0.02, 10, 10);
+    starMaterial = new THREE.MeshBasicMaterial({color: 0xffffff});
   
     addPlayer();
+    addStar();
+
+    //Intervall um die Geschwindigkeit der Sterne zu erhöhen
+    setInterval(function(){
+        secondCount += 1;
+    }, 1000);
 }
 
 function animate(){
+        starBehavior();
         requestAnimationFrame(animate);
         renderer.render(scene, camera);
         renderer.setClearColor(0x000000, 1);
@@ -42,9 +62,26 @@ function animate(){
 function addPlayer(){
         player = new THREE.Mesh(playerGeometry, playerMaterial);
         player.position.z = 2.5;
+        player.material.opacity = 1;
         scene.add(player);
 }
 
+function addStar(){
+    star = new THREE.Mesh(starGeometry, starMaterial);
+    
+    star.position.x = 5;
+    star.position.y = 5;
+    star.position.z = -25;
+    
+    stars.push(star);
+    scene.add(star);
 
-  
+    setTimeout(addStar, starInterval);
+}
+
+function starBehavior(){
+    stars.forEach(function(star){
+        star.position.z += speed + secondCount * 0.01;
+    });
+}
 
