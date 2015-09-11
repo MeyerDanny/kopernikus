@@ -13,6 +13,12 @@ var starInterval = 1000;
 var secondCount = 0;
 var speed = 0.1;
 
+var KEYCODE_LEFT = 37;
+var KEYCODE_UP = 38;
+var KEYCODE_RIGHT = 39;
+var KEYCODE_DOWN = 40;
+var playerSpeed;
+
 init();
 animate();
 
@@ -45,6 +51,27 @@ function init(){
   
     addPlayer();
     addStar();
+    
+    //CONTROLS
+    document.addEventListener('keydown', function(event){
+        playerSpeed = 0.5;
+        goatRotation = 0.05;
+        
+        switch(event.keyCode){
+            case KEYCODE_LEFT:
+                player.position.x -= playerSpeed;
+                break;
+            case KEYCODE_RIGHT:
+                player.position.x += playerSpeed;
+                break;
+            case KEYCODE_UP:
+                player.position.y += playerSpeed;
+                break;
+            case KEYCODE_DOWN:
+                player.position.y -= playerSpeed;
+                break;
+        }
+    });
 
     //Intervall um die Geschwindigkeit der Sterne zu erhöhen
     setInterval(function(){
