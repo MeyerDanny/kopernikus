@@ -9,7 +9,13 @@ var stars = [];
 var starMaterial;
 var starGeometry;
 
+var obstacle;
+var obstacles = [];
+var obstacleMaterial;
+var obstacleGeometry;
+
 var starInterval = 1000;
+var obstacleInterval = 1000;
 var secondCount = 0;
 var speed = 0.1;
 
@@ -48,9 +54,14 @@ function init(){
     //STARS
     starGeometry = new THREE.SphereGeometry(0.02, 10, 10);
     starMaterial = new THREE.MeshBasicMaterial({color: 0xffffff});
-  
+    
+    //OBSTACLES
+    obstacleGeometry = new THREE.SphereGeometry(1.5, 10, 10);
+    obstacleMaterial = new THREE.MeshBasicMaterial({color: 0x00ff00});
+    
     addPlayer();
     addStar();
+    addObstacle();
     
     //CONTROLS
     document.addEventListener('keydown', function(event){
@@ -81,6 +92,7 @@ function init(){
 
 function animate(){
         starBehavior();
+        obstacleBehavior();
         requestAnimationFrame(animate);
         renderer.render(scene, camera);
         renderer.setClearColor(0x000000, 1);
@@ -110,5 +122,26 @@ function starBehavior(){
     stars.forEach(function(star){
         star.position.z += speed + secondCount * 0.01;
     });
+}
+
+function addObstacle(){
+    obstacle = new THREE.Mesh(obstacleGeometry, obstacleMaterial);
+        
+    obstacle.position.x = -5;
+    obstacle.position.y = -5;
+    obstacle.position.z = -100;    
+    obstacles.push(obstacle);
+    scene.add(obstacle);
+    
+    setTimeout(addObstacle, obstacleInterval);
+}
+
+function obstacleBehavior(){
+    obstacles.forEach(function(obstacle){
+        obstacle.position.z += speed + secondCount * 0.01;
+        if(obstacle.position.z > player.position.z){
+            scene.remove(obstacle);
+        }});
+    
 }
 
