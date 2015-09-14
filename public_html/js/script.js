@@ -14,7 +14,7 @@ var obstacles = [];
 var obstacleMaterial;
 var obstacleGeometry;
 
-var starInterval = 1000;
+var starInterval = 1;
 var obstacleInterval = 1000;
 var secondCount = 0;
 var speed = 0.1;
@@ -108,8 +108,8 @@ function addPlayer(){
 function addStar(){
     star = new THREE.Mesh(starGeometry, starMaterial);
     
-    star.position.x = 5;
-    star.position.y = 5;
+    star.position.x = Math.random() * 20 - 10;
+    star.position.y = Math.random() * 20 - 10;
     star.position.z = -25;
     
     stars.push(star);
@@ -126,12 +126,17 @@ function starBehavior(){
 
 function addObstacle(){
     obstacle = new THREE.Mesh(obstacleGeometry, obstacleMaterial);
-        
-    obstacle.position.x = -5;
-    obstacle.position.y = -5;
-    obstacle.position.z = -100;    
+    
+    obstacle.position.x = Math.random() * 20 - 10;
+    obstacle.position.y = Math.random() * 20 - 10;
+    obstacle.position.z = -100; 
+  
     obstacles.push(obstacle);
     scene.add(obstacle);
+    
+    if(obstacleInterval > 50){
+        obstacleInterval -= 1;
+    }
     
     setTimeout(addObstacle, obstacleInterval);
 }
